@@ -34,7 +34,7 @@ const Contact = () => {
       let valid_token = await verifyToken(token);
       setValidToken(valid_token);
 
-      if (valid_token[0].success === true) {
+      if (token[0].success === true) {
         console.log("verified");
         setSuccessMsg("Hurray!! you have submitted the form");
       } else {
@@ -55,20 +55,9 @@ const Contact = () => {
     e.target.reset();
   };
 
-  const verifyToken = async (token) => {
-    let APIResponse = [];
-
-    // try {
-    //   let response = await Axios.post(`http://captcha-form.vercel.app/`, {
-    //     reCAPTCHA_TOKEN: token,
-    //     Secret_Key: SECRET_KEY,
-    //   });
-    //   APIResponse.push(response["data"]);
-    //   return APIResponse;
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  //   const verifyToken = async (token) => {
+  //     let APIResponse = [];
+  //   };
 
   return (
     <>
