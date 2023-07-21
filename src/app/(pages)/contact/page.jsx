@@ -36,21 +36,25 @@ const Contact = () => {
 
       if (valid_token[0].success === true) {
         console.log("verified");
-        setSuccessMsg("Hurray!! you have submitted the form");
+        toast({
+          title: "Form Submitted",
+          description:
+            "We have received your message. We will get back to you soon!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
       } else {
         console.log("not verified");
-        setErrorMsg(" Sorry!! Verify you are not a bot");
+        toast({
+          title: "Error",
+          description: " Sorry!! Verify you are not a bot",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       }
     }
-
-    toast({
-      title: "Form Submitted",
-      description:
-        "We have received your message. We will get back to you soon!",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
 
     e.target.reset();
   };
@@ -94,11 +98,13 @@ const Contact = () => {
             <FormLabel>Message</FormLabel>
             <Textarea placeholder="Enter your message" />
           </FormControl>
-          <ReCAPTCHA
-            className="recaptcha"
-            sitekey={SITE_KEY}
-            ref={captchaRef}
-          />
+          <FormControl id="captcha" mb={4} isRequired>
+            <ReCAPTCHA
+              className="recaptcha"
+              sitekey={SITE_KEY}
+              ref={captchaRef}
+            />
+          </FormControl>
           <Button type="submit" colorScheme="blue">
             Submit
           </Button>
