@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
-import Axios from "axios";
+// import Axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
@@ -58,16 +58,16 @@ const Contact = () => {
   const verifyToken = async (token) => {
     let APIResponse = [];
 
-    try {
-      let response = await Axios.post(`http://captcha-form.vercel.app/`, {
-        reCAPTCHA_TOKEN: token,
-        Secret_Key: SECRET_KEY,
-      });
-      APIResponse.push(response["data"]);
-      return APIResponse;
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   let response = await Axios.post(`http://captcha-form.vercel.app/`, {
+    //     reCAPTCHA_TOKEN: token,
+    //     Secret_Key: SECRET_KEY,
+    //   });
+    //   APIResponse.push(response["data"]);
+    //   return APIResponse;
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
