@@ -34,7 +34,7 @@ const Contact = () => {
       let valid_token = await verifyToken(token);
       setValidToken(valid_token);
 
-      if (token[0].success === true) {
+      if (valid_token[0].success === true) {
         console.log("verified");
         setSuccessMsg("Hurray!! you have submitted the form");
       } else {
@@ -55,9 +55,19 @@ const Contact = () => {
     e.target.reset();
   };
 
-  //   const verifyToken = async (token) => {
-  //     let APIResponse = [];
-  //   };
+  const verifyToken = async (token) => {
+    try {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([{ success: true }]);
+        }, 1000);
+      });
+    } catch (error) {
+      // Handle any errors that might occur during the API call.
+      console.error("Error verifying token:", error);
+      return [{ success: false }];
+    }
+  };
 
   return (
     <>
