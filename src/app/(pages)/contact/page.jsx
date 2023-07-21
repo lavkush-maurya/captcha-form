@@ -59,7 +59,7 @@ const Contact = () => {
     let APIResponse = [];
 
     try {
-      let response = await Axios.post(`http://localhost:3000/verify-token`, {
+      let response = await Axios.post(`http://captcha-form.vercel.app/`, {
         reCAPTCHA_TOKEN: token,
         Secret_Key: SECRET_KEY,
       });
