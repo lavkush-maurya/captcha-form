@@ -16,8 +16,7 @@ import Navbar from "@/components/Navbar";
 
 const Contact = () => {
   const toast = useToast();
-  const [SuccessMsg, setSuccessMsg] = useState("");
-  const [ErrorMsg, setErrorMsg] = useState("");
+
   const [valid_token, setValidToken] = useState([]);
   const captchaRef = useRef(null);
 
@@ -25,7 +24,6 @@ const Contact = () => {
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     e.preventDefault();
     let token = captchaRef.current.getValue();
     captchaRef.current.reset();
@@ -44,19 +42,32 @@ const Contact = () => {
           duration: 5000,
           isClosable: true,
         });
+
+        // If the token is verified, proceed with form submission here.
+        // You can add your form submission logic here, for example:
+        // submitForm();
       } else {
         console.log("not verified");
         toast({
           title: "Error",
-          description: " Sorry!! Verify you are not a bot",
+          description: "Sorry!! Verify you are not a bot",
           status: "error",
           duration: 5000,
           isClosable: true,
         });
       }
+    } else {
+      // Handle the case when the captcha token is not available.
+      console.log("captcha token not available");
+      toast({
+        title: "Error",
+        description: "Please complete the captcha",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-
-    e.target.reset();
+    // e.target.reset();
   };
 
   const verifyToken = async (token) => {
@@ -81,11 +92,6 @@ const Contact = () => {
           Contact Us
         </Heading>
         <form onSubmit={handleSubmit}>
-          {valid_token.length > 0 && valid_token[0].success === true ? (
-            <h3 className="textSuccess">{SuccessMsg}</h3>
-          ) : (
-            <h3 className="textError">{ErrorMsg} </h3>
-          )}
           <FormControl id="name" mb={4} isRequired>
             <FormLabel>Your Name</FormLabel>
             <Input type="text" placeholder="Enter your name" />
