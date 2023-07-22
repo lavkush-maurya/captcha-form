@@ -35,17 +35,6 @@ const Contact = () => {
       if (!token) {
         throw new Error("Captcha token not available");
       }
-      if (!isCaptchaVerified) {
-        console.log("not verified");
-        toast({
-          title: "Error",
-          description: "Sorry!! Verify you are not a bot",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-        return;
-      }
 
       const response = await axios.post("http://localhost:1337/api/contacts", {
         data: data,
