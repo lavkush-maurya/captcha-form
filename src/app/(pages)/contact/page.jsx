@@ -22,7 +22,22 @@ const Contact = () => {
 
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
+  const submitForm = async () => {
+    e.preventDefault();
 
+    try {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+      const data = { name, email, message };
+      const response = await axios.post("http://localhost:1337/api/contacts", {
+        data: data,
+      });
+      console.log(response);
+    } catch (error) {
+      setErrorRestaurants(error);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let token = captchaRef.current.getValue();
@@ -35,6 +50,7 @@ const Contact = () => {
       if (valid_token[0].success === true) {
         console.log("verified");
         e.target.reset();
+        submitForm();
         toast({
           title: "Form Submitted",
           description:
@@ -43,10 +59,6 @@ const Contact = () => {
           duration: 5000,
           isClosable: true,
         });
-
-        // If the token is verified, proceed with form submission here.
-        // You can add your form submission logic here, for example:
-        // submitForm();
       } else {
         console.log("not verified");
         toast({
