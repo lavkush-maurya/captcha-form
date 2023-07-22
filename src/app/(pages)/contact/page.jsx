@@ -22,7 +22,9 @@ const Contact = () => {
 
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
-
+  const submitForm = () => {
+    e.target.reset();
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     let token = captchaRef.current.getValue();
@@ -45,7 +47,7 @@ const Contact = () => {
 
         // If the token is verified, proceed with form submission here.
         // You can add your form submission logic here, for example:
-        // submitForm();
+        submitForm();
       } else {
         console.log("not verified");
         toast({
