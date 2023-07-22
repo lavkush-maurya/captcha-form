@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useRef } from "react";
-// import Axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
   Box,
@@ -16,41 +16,49 @@ import Navbar from "@/components/Navbar";
 
 const Contact = () => {
   const toast = useToast();
-
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
   const [valid_token, setValidToken] = useState([]);
   const captchaRef = useRef(null);
 
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
-  const submitForm = async () => {
-    e.preventDefault();
 
-    try {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
-      const data = { name, email, message };
-      const response = await axios.post("http://localhost:1337/api/contacts", {
-        data: data,
-      });
-      console.log(response);
-    } catch (error) {
-      setErrorRestaurants(error);
-    }
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let token = captchaRef.current.getValue();
-    captchaRef.current.reset();
+    const Name = document.getElementById("name").value;
+    const Email = document.getElementById("email").value;
+    const Message = document.getElementById("message").value;
+    const data = { Name, Email, Message };
 
-    if (token) {
-      let valid_token = await verifyToken(token);
-      setValidToken(valid_token);
+    try {
+      const token = captchaRef.current.getValue();
+      captchaRef.current.reset();
 
-      if (valid_token[0].success === true) {
+      if (!token) {
+        throw new Error("Captcha token not available");
+      }
+      if (!isCaptchaVerified) {
+        console.log("not verified");
+        toast({
+          title: "Error",
+          description: "Sorry!! Verify you are not a bot",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return; // Exit the function and do not submit the form
+      }
+
+      const response = await axios.post("http://localhost:1337/api/contacts", {
+        data: data,
+        captchaToken: token,
+        secretKey: SECRET_KEY,
+      });
+
+      if (response.data.success) {
         console.log("verified");
         e.target.reset();
-        submitForm();
+        setIsCaptchaVerified(true);
         toast({
           title: "Form Submitted",
           description:
@@ -61,6 +69,7 @@ const Contact = () => {
         });
       } else {
         console.log("not verified");
+        setIsCaptchaVerified(false);
         toast({
           title: "Error",
           description: "Sorry!! Verify you are not a bot",
@@ -69,31 +78,15 @@ const Contact = () => {
           isClosable: true,
         });
       }
-    } else {
-      // Handle the case when the captcha token is not available.
-      console.log("captcha token not available");
+    } catch (error) {
+      console.error("Error submitting the form:", error);
       toast({
         title: "Error",
-        description: "Please complete the captcha",
+        description: "An error occurred while submitting the form.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
-    }
-    // e.target.reset();
-  };
-
-  const verifyToken = async (token) => {
-    try {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([{ success: true }]);
-        }, 1000);
-      });
-    } catch (error) {
-      // Handle any errors that might occur during the API call.
-      console.error("Error verifying token:", error);
-      return [{ success: false }];
     }
   };
 
