@@ -16,7 +16,7 @@ import Navbar from "@/components/Navbar";
 
 const Contact = () => {
   const toast = useToast();
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true);
   const captchaRef = useRef(null);
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
