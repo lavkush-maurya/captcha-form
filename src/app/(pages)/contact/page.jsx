@@ -30,10 +30,9 @@ const Contact = () => {
       const email = document.getElementById("email").value;
       const message = document.getElementById("message").value;
       const data = { name, email, message };
-      const response = await axios.post(
-        "http://localhost:1337/api/contacts",
-        data
-      );
+      const response = await axios.post("http://localhost:1337/api/contacts", {
+        data: data,
+      });
       console.log(response);
     } catch (error) {
       setErrorRestaurants(error);
