@@ -45,7 +45,7 @@ const Contact = () => {
       if (response.data.success) {
         console.log("verified");
         e.target.reset();
-        setIsCaptchaVerified(false);
+        setIsCaptchaVerified(true);
         toast({
           title: "Form Submitted",
           description:
@@ -56,7 +56,7 @@ const Contact = () => {
         });
       } else {
         console.log("not verified");
-        setIsCaptchaVerified(true);
+        setIsCaptchaVerified(false);
         toast({
           title: "Error",
           description: "Sorry!! Verify you are not a bot",
