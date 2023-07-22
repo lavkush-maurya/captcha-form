@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import {
@@ -17,9 +17,7 @@ import Navbar from "@/components/Navbar";
 const Contact = () => {
   const toast = useToast();
   const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
-  const [valid_token, setValidToken] = useState([]);
   const captchaRef = useRef(null);
-
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
 
@@ -46,7 +44,7 @@ const Contact = () => {
           duration: 5000,
           isClosable: true,
         });
-        return; // Exit the function and do not submit the form
+        return;
       }
 
       const response = await axios.post("http://localhost:1337/api/contacts", {
