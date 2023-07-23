@@ -20,7 +20,7 @@ const Contact = () => {
   const captchaRef = useRef(null);
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
-
+  console.log(isCaptchaVerified, "captaaaaaa");
   const handleSubmit = async (e) => {
     e.preventDefault();
     const Name = document.getElementById("name").value;
@@ -44,6 +44,7 @@ const Contact = () => {
 
       if (response.data.success) {
         console.log("verified");
+        console.log(isCaptchaVerified, "verified=true");
         e.target.reset();
         setIsCaptchaVerified(true);
         toast({
