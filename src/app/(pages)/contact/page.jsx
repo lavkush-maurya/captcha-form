@@ -17,7 +17,7 @@ import Navbar from "@/components/Navbar";
 const Contact = () => {
   const toast = useToast();
 
-  const [valid_token, setValidToken] = useState([]);
+  const [validToken, setValidToken] = useState(false);
   const captchaRef = useRef(null);
 
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
@@ -36,18 +36,20 @@ const Contact = () => {
       if (!token) {
         throw new Error("Captcha token not available");
       }
-      setValidToken(valid_token);
-       valid_token = await verifyToken(token);
-      if (valid_token[0].success === true) {
-        const response = await axios
-          .post("http://localhost:1337/api/contacts", {
+      const verificationResult = await verifyToken(token);
+      setValidToken(verificationResult.success);
+      if (verificationResult.success) {
+        const response = await axios.post(
+          "http://localhost:1337/api/contacts",
+          {
             data: data,
-          })
-          .then((res) => console.log(res));
-        console.log(response.status, "responce");
+          }
+        );
+
+        console.log(response.status, "response");
         console.log("verified");
         e.target.reset();
-        submitForm();
+        // submitForm();
         toast({
           title: "Form Submitted",
           description:
@@ -66,9 +68,9 @@ const Contact = () => {
           isClosable: true,
         });
       }
-    } catch {
+    } catch (error) {
       // Handle the case when the captcha token is not available.
-      console.log("captcha token not available");
+      console.log("captcha token not available", error);
       toast({
         title: "Error",
         description: "Please complete the captcha",
@@ -90,7 +92,7 @@ const Contact = () => {
     } catch (error) {
       // Handle any errors that might occur during the API call.
       console.error("Error verifying token:", error);
-      return [{ success: false }];
+      return { success: false };
     }
   };
 
