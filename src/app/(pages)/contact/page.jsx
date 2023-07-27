@@ -16,11 +16,13 @@ import Navbar from "@/components/Navbar";
 
 const Contact = () => {
   const toast = useToast();
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
+
+  const [valid_token, setValidToken] = useState([]);
   const captchaRef = useRef(null);
+
   const SITE_KEY = "6LegN0EnAAAAAP9I8OHKXbeaCzwgwUXm7OiT6JBY";
   const SECRET_KEY = "6LegN0EnAAAAAPdEB1q-62C1Z9P0i5irQvX13qPu";
-  console.log(isCaptchaVerified, "captaaaaaa");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const Name = document.getElementById("name").value;
@@ -28,25 +30,24 @@ const Contact = () => {
     const Message = document.getElementById("message").value;
     const data = { Name, Email, Message };
 
-    try {
-      const token = captchaRef.current.getValue();
-      captchaRef.current.reset();
+    // console.log(data, "data");
 
-      if (!token) {
-        throw new Error("Captcha token not available");
-      }
-
-      const response = await axios.post("http://localhost:1337/api/contacts", {
+    const response = await axios
+      .post("http://localhost:1337/api/contacts", {
         data: data,
-        captchaToken: token,
-        secretKey: SECRET_KEY,
-      });
+      })
+      .then((res) => console.log(res));
 
-      if (response.data.success) {
+    let token = captchaRef.current.getValue();
+    captchaRef.current.reset();
+
+    if (token) {
+      setValidToken(valid_token);
+
+      if (valid_token[0].success === true) {
         console.log("verified");
-        console.log(isCaptchaVerified, "verified=true");
         e.target.reset();
-        setIsCaptchaVerified(true);
+        submitForm();
         toast({
           title: "Form Submitted",
           description:
@@ -57,7 +58,6 @@ const Contact = () => {
         });
       } else {
         console.log("not verified");
-        setIsCaptchaVerified(false);
         toast({
           title: "Error",
           description: "Sorry!! Verify you are not a bot",
@@ -66,15 +66,31 @@ const Contact = () => {
           isClosable: true,
         });
       }
-    } catch (error) {
-      console.error("Error submitting the form:", error);
+    } else {
+      // Handle the case when the captcha token is not available.
+      console.log("captcha token not available");
       toast({
         title: "Error",
-        description: "An error occurred while submitting the form.",
+        description: "Please complete the captcha",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
+    }
+    // e.target.reset();
+  };
+
+  const verifyToken = async (token) => {
+    try {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([{ success: true }]);
+        }, 1000);
+      });
+    } catch (error) {
+      // Handle any errors that might occur during the API call.
+      console.error("Error verifying token:", error);
+      return [{ success: false }];
     }
   };
 
