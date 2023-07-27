@@ -29,22 +29,22 @@ const Contact = () => {
     const Email = document.getElementById("email").value;
     const Message = document.getElementById("message").value;
     const data = { Name, Email, Message };
+    try {
+      let token = captchaRef.current.getValue();
+      captchaRef.current.reset();
 
-    // console.log(data, "data");
-
-    const response = await axios
-      .post("http://localhost:1337/api/contacts", {
-        data: data,
-      })
-      .then((res) => console.log(res));
-
-    let token = captchaRef.current.getValue();
-    captchaRef.current.reset();
-
-    if (token) {
-      setValidToken(valid_token);
-
+      if (!token) {
+        throw new Error("Captcha token not available");
+      }
+      // setValidToken(valid_token);
+      const valid_token = await verifyToken(token);
       if (valid_token[0].success === true) {
+        const response = await axios
+          .post("http://localhost:1337/api/contacts", {
+            data: data,
+          })
+          .then((res) => console.log(res));
+        console.log(response, "responce");
         console.log("verified");
         e.target.reset();
         submitForm();
@@ -66,7 +66,7 @@ const Contact = () => {
           isClosable: true,
         });
       }
-    } else {
+    } catch {
       // Handle the case when the captcha token is not available.
       console.log("captcha token not available");
       toast({
