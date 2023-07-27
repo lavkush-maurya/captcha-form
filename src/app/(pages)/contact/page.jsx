@@ -44,7 +44,7 @@ const Contact = () => {
             data: data,
           })
           .then((res) => console.log(res));
-        console.log(response, "responce");
+        console.log(response.status, "responce");
         console.log("verified");
         e.target.reset();
         submitForm();
