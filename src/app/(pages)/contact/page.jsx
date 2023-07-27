@@ -31,7 +31,7 @@ const Contact = () => {
     const data = { Name, Email, Message };
     try {
       let token = captchaRef.current.getValue();
-      // captchaRef.current.reset();
+      captchaRef.current.reset();
 
       if (!token) {
         throw new Error("Captcha token not available");
@@ -48,7 +48,7 @@ const Contact = () => {
 
         console.log(response.status, "response");
         console.log("verified");
-        // e.target.reset();
+        e.target.reset();
         // submitForm();
         toast({
           title: "Form Submitted",
