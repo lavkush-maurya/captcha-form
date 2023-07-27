@@ -36,8 +36,8 @@ const Contact = () => {
       if (!token) {
         throw new Error("Captcha token not available");
       }
-      // setValidToken(valid_token);
-      const valid_token = await verifyToken(token);
+      setValidToken(valid_token);
+       valid_token = await verifyToken(token);
       if (valid_token[0].success === true) {
         const response = await axios
           .post("http://localhost:1337/api/contacts", {
