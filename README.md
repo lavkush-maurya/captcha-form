@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 ---
-This is a Backend Code of this Project:  [https://github.com/lavkush-maurya/my-first-strapi-project(https://github.com/lavkush-maurya/my-first-strapi-project)]
+This is a Backend Code of this Project:  [https://github.com/lavkush-maurya/my-first-strapi-project]
 ---
 ## Getting Started
 
